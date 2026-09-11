@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="public/logo.jpg" alt="AssetFlow Logo" width="160" style="border-radius: 24px; margin-bottom: 16px;" />
+
 # ⚡ AssetFlow
 ### *Next-Generation AI-Powered Enterprise Asset & Resource Management System*
 
