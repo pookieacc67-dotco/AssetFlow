@@ -32,8 +32,8 @@ def recommend_assets(prompt: str, available_assets: List[Dict[str, Any]]) -> Dic
     ai = get_ai_client()
     assets_context = json.dumps(available_assets)
     
-    response = ai.models.generateContent(
-        model="gemini-3.6-flash",
+    response = ai.models.generate_content(
+        model="gemini-2.5-flash",
         contents=f"User requirement: {prompt}\n\nCandidate Available Assets:\n{assets_context}",
         config=types.GenerateContentConfig(
             systemInstruction=(
@@ -79,8 +79,8 @@ def parse_smart_booking(prompt: str, resources: List[Dict[str, Any]], current_ti
     ai = get_ai_client()
     resources_context = json.dumps(resources)
     
-    response = ai.models.generateContent(
-        model="gemini-3.6-flash",
+    response = ai.models.generate_content(
+        model="gemini-2.5-flash",
         contents=f"User command: {prompt}\n\nCurrent context time: {current_time}\n\nCorporate resources:\n{resources_context}",
         config=types.GenerateContentConfig(
             systemInstruction=(
@@ -114,8 +114,8 @@ def generate_strategic_report(stats: Dict[str, Any]) -> str:
     ai = get_ai_client()
     stats_context = json.dumps(stats)
     
-    response = ai.models.generateContent(
-        model="gemini-3.6-flash",
+    response = ai.models.generate_content(
+        model="gemini-2.5-flash",
         contents=f"Quantitative Database Metrics:\n{stats_context}",
         config=types.GenerateContentConfig(
             systemInstruction=(
