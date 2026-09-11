@@ -262,6 +262,4 @@ This project is licensed under the **MIT License** — feel free to use and exte
 
 Built with ❤️ by **Janvi Panchal** & **Hemal Mistry**
 
-*Empowering modern organizations with intelligent asset automation.*
-
 </div>
