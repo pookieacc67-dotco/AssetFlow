@@ -20,20 +20,46 @@
 
 ---
 
+## 🎯 Why AssetFlow? (Problem & Purpose)
+
+Modern organizations manage hundreds to thousands of physical and digital assets—servers, developer laptops, meeting rooms, IoT hardware, testing rigs, and specialized tools. Traditional asset management systems suffer from critical bottlenecks:
+
+- **Scattered & Static Tracking:** Spreadsheets and legacy ERPs get outdated fast, leading to "ghost assets", misplaced inventory, and double-booked rooms.
+- **Manual Workload Matching:** Engineers and employees waste hours guessing which workstation or testing rig fits their specific workload requirements (e.g., GPU/VRAM/Storage).
+- **Reactive Maintenance:** Equipment breaks down before IT teams notice, causing costly downtime because maintenance schedules aren't automated.
+- **Friction-Filled Booking:** Complex calendar interfaces require multiple clicks and forms just to reserve an asset or room.
+
+---
+
+## 💡 How AssetFlow Helps (Real-World Impact)
+
+AssetFlow transforms static inventory into an **active, AI-driven asset ecosystem**:
+
+| Challenge in Traditional Systems | How AssetFlow Solves It |
+|---|---|
+| **Guesswork in hardware allocation** | 🧠 **Autonomous AI Matching:** Google Gemini AI analyzes user tasks (e.g., *"I need to run 4K video rendering and large language model fine-tuning"*) and instantly recommends the exact hardware with adequate specs. |
+| **Complex booking forms** | 💬 **Smart Natural Language Booking:** Type or speak plain English (e.g., *"Book meeting room 3 for design review tomorrow at 2 PM"*), and AI parses dates, durations, and assets automatically. |
+| **Surprise hardware failures** | 📈 **Real-Time Telemetry & Preventative Logs:** Tracks device health scores, battery cycles, temperatures, and maintenance milestones to prevent downtime. |
+| **Siloed team data** | 🏢 **Multi-Tenant Architecture:** Seamlessly supports multiple organizations and departments with role-based access control (Admin, Manager, Member, Viewer). |
+| **Manual executive reporting** | 📊 **One-Click Strategic Insights:** Autonomous AI summarizes fleet utilization, deprecation warnings, and health metrics into executive reports. |
+
+---
+
 ## 📑 Table of Contents
 - [✨ Key Features](#-key-features)
-- [🏗️ System Architecture](#-system-architecture)
-- [🛠️ Tech Stack](#-tech-stack)
+- [🏗️ System Architecture](#️-system-architecture)
+- [🛠️ Tech Stack](#️-tech-stack)
 - [🚀 Quick Start (Local Setup)](#-quick-start-local-setup)
   - [1. Clone Repository](#1-clone-repository)
   - [2. Environment Variables](#2-environment-variables)
   - [3. Backend Setup (FastAPI)](#3-backend-setup-fastapi)
   - [4. Frontend Setup (React + Vite)](#4-frontend-setup-react--vite)
 - [🐳 Docker & Containerization](#-docker--containerization)
-- [🗄️ Database Schema & Services](#-database-schema--services)
+- [🗄️ Database Schema & Services](#️-database-schema--services)
 - [👥 Collaboration & Contributing](#-collaboration--contributing)
-- [🛡️ Security & Privacy](#-security--privacy)
+- [🛡️ Security & Privacy](#️-security--privacy)
 - [📄 License](#-license)
+- [👨‍💻 Authors & Acknowledgments](#-authors--acknowledgments)
 
 ---
 
@@ -230,6 +256,12 @@ This project is licensed under the **MIT License** — feel free to use and exte
 
 ---
 
+## 👨‍💻 Authors & Acknowledgments
+
 <div align="center">
-  <b>Built with ❤️ by the AssetFlow Team</b>
+
+Built with ❤️ by **Janvi Panchal** & **Hemal Mistry**
+
+*Empowering modern organizations with intelligent asset automation.*
+
 </div>
