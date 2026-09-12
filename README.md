@@ -262,6 +262,6 @@ This project is licensed under the **MIT License** — feel free to use and exte
 
 <div align="center">
 
-Built with ❤️ by **Janvi Panchal** & **Hemal Mistry**
+Built by **Janvi Panchal** & **Hemal Mistry**
 
 </div>
