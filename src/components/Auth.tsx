@@ -22,6 +22,7 @@ import {
   createUserWithEmailAndPassword
 } from "firebase/auth";
 import { auth } from "../firebase";
+import { API_BASE_URL } from "../config/api";
 
 interface AuthProps {
   onNavigate: (view: "home" | "about" | "app" | "pending") => void;
@@ -216,7 +217,7 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
         idToken = `mock_uid_usr-${Math.random().toString(36).substring(2, 9)}_email_${loginEmail}_name_${fullName.replace(/\s+/g, "-")}`;
       }
 
-      const response = await fetch("http://localhost:8000/api/auth/complete-org-signup", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/complete-org-signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -295,7 +296,7 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
         idToken = `mock_uid_usr-${Math.random().toString(36).substring(2, 9)}_email_${loginEmail}_name_${fullName.replace(/\s+/g, "-")}`;
       }
 
-      const response = await fetch("http://localhost:8000/api/auth/complete-employee-signup", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/complete-employee-signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -356,7 +357,7 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
         idToken = `mock_uid_usr-default_email_${loginEmail}_name_Active-User`;
       }
 
-      const profileRes = await fetch("http://localhost:8000/api/users/me", {
+      const profileRes = await fetch(`${API_BASE_URL}/api/users/me`, {
         headers: {
           "Authorization": `Bearer ${idToken}`
         }

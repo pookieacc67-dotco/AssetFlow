@@ -16,6 +16,7 @@ import {
   Sparkles,
   Info
 } from "lucide-react";
+import { API_BASE_URL } from "../config/api";
 
 interface AssetsProps {
   searchQuery: string;
@@ -60,7 +61,7 @@ export const AssetsView: React.FC<AssetsProps> = ({ searchQuery: topSearch }) =>
     setAiLoading(true);
     setAiError(null);
     try {
-      const response = await fetch("/api/ai/recommend", {
+      const response = await fetch(`${API_BASE_URL}/api/ai/recommend`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: aiPrompt, assets }),

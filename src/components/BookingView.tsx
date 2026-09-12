@@ -13,6 +13,7 @@ import {
   Info,
   Sparkles
 } from "lucide-react";
+import { API_BASE_URL } from "../config/api";
 
 export const BookingView: React.FC = () => {
   const { 
@@ -50,7 +51,7 @@ export const BookingView: React.FC = () => {
     setAiBookingError(null);
     setAiBookingFeedback(null);
     try {
-      const response = await fetch("/api/ai/book", {
+      const response = await fetch(`${API_BASE_URL}/api/ai/book`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 

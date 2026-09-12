@@ -11,6 +11,7 @@ import {
   Sparkles,
   Info
 } from "lucide-react";
+import { API_BASE_URL } from "../config/api";
 
 export const ReportsView: React.FC = () => {
   const { currentUser, assets, bookings, maintenance, users, categories } = useAssetFlow();
@@ -42,7 +43,7 @@ export const ReportsView: React.FC = () => {
     setAiReportLoading(true);
     setAiReportError(null);
     try {
-      const response = await fetch("/api/ai/report", {
+      const response = await fetch(`${API_BASE_URL}/api/ai/report`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ stats })

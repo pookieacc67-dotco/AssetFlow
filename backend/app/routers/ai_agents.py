@@ -8,6 +8,7 @@ from app.ai.agents import recommend_assets, parse_smart_booking, generate_strate
 router = APIRouter()
 
 @router.post("/recommend-assets")
+@router.post("/recommend")
 def get_recommendations(payload: AssetRecommendationRequest):
     """
     Ranks real available inventory assets based on plain-language requirement prompts.
@@ -19,6 +20,7 @@ def get_recommendations(payload: AssetRecommendationRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/smart-booking")
+@router.post("/book")
 def get_smart_booking(payload: SmartBookingRequest):
     """
     Parses plain text commands to derive structured resource allocation slots.
@@ -31,12 +33,13 @@ def get_smart_booking(payload: SmartBookingRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/generate-report")
+@router.post("/report")
 def get_strategic_report(payload: ReportGeneratorRequest):
     """
     Formulates professional insight summaries from raw operational stats.
     """
     try:
         report_text = generate_strategic_report(payload.stats)
-        return {"reportMarkdown": report_text}
+        return {"report": report_text, "reportMarkdown": report_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
