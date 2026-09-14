@@ -2,7 +2,7 @@
 
 <img src="public/logo.jpg" alt="AssetFlow Logo" width="160" style="border-radius: 24px; margin-bottom: 16px;" />
 
-# ⚡ AssetFlow
+# ⚡AssetFlow
 ### *Next-Generation AI-Powered Enterprise Asset & Resource Management System*
 
 [![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
