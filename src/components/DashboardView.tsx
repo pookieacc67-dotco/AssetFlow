@@ -45,6 +45,11 @@ export const DashboardView: React.FC<DashboardProps> = ({ onNavigateSection, sea
     return assets;
   }, [assets, users, role, isOrgScoped, isDeptScoped, currentUser]);
 
+  const topRecommendedAsset = useMemo(() => {
+    return scopedAssets.find(a => a.status === "Available") || scopedAssets[0] || null;
+  }, [scopedAssets]);
+
+
   const activeAllocations = useMemo(() => {
     return scopedAssets.filter(a => a.status === "Allocated").length;
   }, [scopedAssets]);
@@ -422,25 +427,38 @@ export const DashboardView: React.FC<DashboardProps> = ({ onNavigateSection, sea
                 Analyzing your organization's active hardware profile, warranty periods, and active department assignments...
               </p>
               
-              <div className="p-[16px] rounded-[16px] bg-[#FFFFFF] border border-[#ECECEA] flex flex-col gap-[8px]">
-                <span className="text-[10.5px] font-medium leading-[14px] tracking-[0.3px] uppercase text-[#9A9DA4]">Top Recommended Match</span>
-                <span className="text-[15px] font-semibold leading-[20px] text-[#15161A]">Dell XPS 15 (AST-1042)</span>
-                
-                <div className="grid grid-cols-2 gap-[8px] mt-[4px] text-[11.5px] font-normal leading-[16px]">
-                  <div>
-                    <span className="block text-[#9A9DA4]">Health Status</span>
-                    <span className="text-[#2FBE6C] font-semibold">96% Excellent</span>
+              {topRecommendedAsset ? (
+                <>
+                  <div className="p-[16px] rounded-[16px] bg-[#FFFFFF] border border-[#ECECEA] flex flex-col gap-[8px]">
+                    <span className="text-[10.5px] font-medium leading-[14px] tracking-[0.3px] uppercase text-[#9A9DA4]">Top Recommended Match</span>
+                    <span className="text-[15px] font-semibold leading-[20px] text-[#15161A]">
+                      {topRecommendedAsset.name} ({topRecommendedAsset.tag})
+                    </span>
+                    
+                    <div className="grid grid-cols-2 gap-[8px] mt-[4px] text-[11.5px] font-normal leading-[16px]">
+                      <div>
+                        <span className="block text-[#9A9DA4]">Status</span>
+                        <span className="text-[#2FBE6C] font-semibold">{topRecommendedAsset.status}</span>
+                      </div>
+                      <div>
+                        <span className="block text-[#9A9DA4]">Current Location</span>
+                        <span className="text-[#15161A]">{topRecommendedAsset.location || "Storage"}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <span className="block text-[#9A9DA4]">Current Location</span>
-                    <span className="text-[#15161A]">Main Office - Bay A</span>
-                  </div>
-                </div>
-              </div>
 
-              <p className="text-[11.5px] font-normal leading-[16px] text-[#9A9DA4]">
-                This asset was recently verified during the quarterly audit cycle. It has optimal specs for software development and holds no outstanding reservation conflicts.
-              </p>
+                  <p className="text-[11.5px] font-normal leading-[16px] text-[#9A9DA4]">
+                    AI selected this asset based on availability, hardware specifications, and absence of reservation conflicts.
+                  </p>
+                </>
+              ) : (
+                <div className="p-[16px] rounded-[16px] bg-[#F7F7F6] border border-[#ECECEA] flex flex-col gap-[4px] text-center">
+                  <span className="text-[13px] font-semibold text-[#15161A]">No Assets Available</span>
+                  <p className="text-[11.5px] text-[#9A9DA4]">
+                    There are no physical assets registered in your organization yet. Add your first asset in the Assets tab to enable autonomous AI recommendations.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="flex gap-[12px] mt-[24px]">

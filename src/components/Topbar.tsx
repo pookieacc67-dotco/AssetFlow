@@ -71,7 +71,7 @@ export const Topbar: React.FC<TopbarProps> = ({
           <span className="font-extrabold text-[16px] text-[#15161A] font-sans tracking-tight bg-gradient-to-r from-[#FF4D8D] to-[#FFA35C] bg-clip-text text-transparent">AssetFlow</span>
           <span className="text-[12px] text-[#9A9DA4] font-semibold select-none hidden sm:inline">•</span>
           <span className="text-[12px] font-bold text-[#5B5E66] hidden sm:inline truncate max-w-[120px] md:max-w-[180px]">
-            {currentOrg?.name || "Acme Logistics"}
+            {currentOrg?.name || "Enterprise Workspace"}
           </span>
         </div>
 

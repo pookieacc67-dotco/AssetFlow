@@ -29,16 +29,26 @@ class DBConnection:
         self.is_postgres = bool(HAS_PSYCOPG2 and DATABASE_URL and (DATABASE_URL.startswith("postgres://") or DATABASE_URL.startswith("postgresql://")))
         if DATABASE_URL and not HAS_PSYCOPG2:
             print("[AssetFlow DB] Warning: DATABASE_URL provided but psycopg2 is not installed. Falling back to local SQLite.")
+        elif self.is_postgres:
+            try:
+                test_conn = psycopg2.connect(DATABASE_URL, connect_timeout=5)
+                test_conn.close()
+            except Exception as e:
+                print(f"[AssetFlow DB] Warning: Could not connect to PostgreSQL ({e}). Falling back to local SQLite.")
+                self.is_postgres = False
         self._initialize_db()
 
     def _get_conn(self):
         if self.is_postgres:
-            return psycopg2.connect(DATABASE_URL)
-        else:
-            conn = sqlite3.connect(DB_PATH)
-            conn.row_factory = sqlite3.Row
-            conn.execute("PRAGMA foreign_keys = ON;")
-            return conn
+            try:
+                return psycopg2.connect(DATABASE_URL)
+            except Exception as e:
+                print(f"[AssetFlow DB] Warning: Postgres connection failed ({e}). Falling back to local SQLite.")
+                self.is_postgres = False
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA foreign_keys = ON;")
+        return conn
 
     def _get_cursor(self, conn):
         if self.is_postgres:

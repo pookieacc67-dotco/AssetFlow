@@ -144,28 +144,11 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
       return;
     }
 
-    // Offline mock fallback
+    // Fallback when Firebase auth is unavailable
     setTimeout(() => {
       setIsLoading(false);
-      const mockEmail = provider === "google" ? "google-user@company.com" : "github-user@company.com";
-      const existingUser = users.find(u => u.email === mockEmail);
-      
-      if (existingUser) {
-        const res = login(mockEmail);
-        if (res.success && res.user) {
-          if (res.user.status === "approved") {
-            onNavigate("app");
-          } else {
-            setStep("pending");
-          }
-        }
-      } else {
-        setEmail(mockEmail);
-        setFullName(provider === "google" ? "Google User" : "GitHub User");
-        setStep("landing");
-        setSuccessMsg("Authorization successful. Please click Create or Join Organization below.");
-      }
-    }, 1000);
+      setErrorMsg("Authentication service unavailable. Please check your network connection or enter credentials directly.");
+    }, 500);
   };
 
   const handleCreateOrg = async (e: React.FormEvent) => {
@@ -624,7 +607,7 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="Alex Rivera"
+                    placeholder="Full Name"
                     className="w-full pl-11 pr-4 py-3 rounded-2xl border border-[#ECECEA] bg-white text-sm focus:outline-none focus:border-[#15161A]"
                   />
                 </div>
@@ -639,7 +622,7 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
                     required
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
-                    placeholder="Acme Logistics"
+                    placeholder="Company Name"
                     className="w-full pl-11 pr-4 py-3 rounded-2xl border border-[#ECECEA] bg-white text-sm focus:outline-none focus:border-[#15161A]"
                   />
                 </div>
@@ -654,7 +637,7 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="alex@acme.com"
+                    placeholder="admin@company.com"
                     className="w-full pl-11 pr-4 py-3 rounded-2xl border border-[#ECECEA] bg-white text-sm focus:outline-none focus:border-[#15161A]"
                   />
                 </div>
@@ -711,7 +694,7 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="Jane Doe"
+                    placeholder="Full Name"
                     className="w-full pl-11 pr-4 py-3 rounded-2xl border border-[#ECECEA] bg-white text-sm focus:outline-none focus:border-[#15161A]"
                   />
                 </div>
@@ -784,7 +767,7 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="jane@company.com"
+                    placeholder="name@company.com"
                     className="w-full pl-11 pr-4 py-3 rounded-2xl border border-[#ECECEA] bg-white text-sm focus:outline-none focus:border-[#15161A]"
                   />
                 </div>
