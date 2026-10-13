@@ -24,7 +24,7 @@
 
 ## 🎯 Why AssetFlow? (Problem & Purpose)
 
-Modern organizations manage hundreds to thousands of physical and digital assets—servers, developer laptops, meeting rooms, IoT hardware, testing rigs, and specialized tools. Traditional asset management systems suffer from critical bottlenecks:
+Modern organizations manage hundreds to thousands of physical and digital assets servers, developer laptops, meeting rooms, IoT hardware, testing rigs, and specialized tools. Traditional asset management systems suffer from critical bottlenecks:
 
 - **Scattered & Static Tracking:** Spreadsheets and legacy ERPs get outdated fast, leading to "ghost assets", misplaced inventory, and double-booked rooms.
 - **Manual Workload Matching:** Engineers and employees waste hours guessing which workstation or testing rig fits their specific workload requirements (e.g., GPU/VRAM/Storage).
