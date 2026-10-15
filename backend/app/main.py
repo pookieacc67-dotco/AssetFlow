@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -19,14 +20,26 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS configuration for production-ready frontend access
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # In production, specify the concrete domains
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# CORS configuration for production-ready frontend access (Vercel & custom domains)
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "").strip()
+if allowed_origins_env and allowed_origins_env != "*":
+    origins = [orig.strip() for orig in allowed_origins_env.split(",") if orig.strip()]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+else:
+    # Reflect requesting origins to support Vercel deployment URLs and preview branches safely with credentials
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origin_regex=r"https?://.*",
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 # Health check
 @app.get("/api/health", tags=["System"])

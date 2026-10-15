@@ -1,0 +1,11 @@
+# Nixpacks configuration for Railway deployment
+providers = ["python"]
+
+[phases.setup]
+nixPkgs = ["python311"]
+
+[phases.install]
+cmds = ["python -m pip install --no-cache-dir -r requirements.txt"]
+
+[start]
+cmd = "sh start.sh"

@@ -57,6 +57,7 @@ AssetFlow transforms static inventory into an **active, AI-driven asset ecosyste
   - [3. Backend Setup (FastAPI)](#3-backend-setup-fastapi)
   - [4. Frontend Setup (React + Vite)](#4-frontend-setup-react--vite)
 - [🐳 Docker & Containerization](#-docker--containerization)
+- [🌐 Cloud Deployment (Vercel & Railway)](DEPLOYMENT.md)
 - [🗄️ Database Schema & Services](#️-database-schema--services)
 - [👥 Collaboration & Contributing](#-collaboration--contributing)
 - [🛡️ Security & Privacy](#️-security--privacy)
@@ -213,7 +214,15 @@ docker-compose down
 
 ---
 
-## 🗄️ Database Schema & Services
+## 🌐 Cloud Deployment (Vercel & Railway)
+
+AssetFlow is architected for zero-configuration, production-grade cloud deployment:
+- **Frontend (Vercel):** Deploys globally on Vercel's edge network from the project root using Vite.
+- **Backend (Railway):** Deploys Python FastAPI on Railway using Nixpacks or Docker with automatic health checks.
+
+👉 **Follow the complete step-by-step instructions in [`DEPLOYMENT.md`](DEPLOYMENT.md).**
+
+---
 
 The platform utilizes a structured 16-table relational schema:
 - `organizations` & `organization_members` (Multi-tenancy & RBAC)
