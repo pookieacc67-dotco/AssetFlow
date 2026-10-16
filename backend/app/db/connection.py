@@ -4,6 +4,10 @@ import uuid
 import json
 from typing import Dict, Any, List, Optional
 import re
+from dotenv import load_dotenv
+
+# Automatically load .env from project root or backend folder
+load_dotenv()
 
 # Optional Postgres support
 try:
@@ -15,7 +19,6 @@ except ImportError:
     RealDictCursor = None
     HAS_PSYCOPG2 = False
 
-DATABASE_URL = os.getenv("DATABASE_URL")
 DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "assetflow.db"))
 SCHEMA_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "schema.sql"))
 
@@ -26,22 +29,26 @@ class DBConnection:
     connects to PostgreSQL (Supabase) in production.
     """
     def __init__(self):
-        self.is_postgres = bool(HAS_PSYCOPG2 and DATABASE_URL and (DATABASE_URL.startswith("postgres://") or DATABASE_URL.startswith("postgresql://")))
-        if DATABASE_URL and not HAS_PSYCOPG2:
+        self.database_url = os.getenv("DATABASE_URL")
+        self.is_postgres = bool(HAS_PSYCOPG2 and self.database_url and (self.database_url.startswith("postgres://") or self.database_url.startswith("postgresql://")))
+        if self.database_url and not HAS_PSYCOPG2:
             print("[AssetFlow DB] Warning: DATABASE_URL provided but psycopg2 is not installed. Falling back to local SQLite.")
         elif self.is_postgres:
             try:
-                test_conn = psycopg2.connect(DATABASE_URL, connect_timeout=5)
+                test_conn = psycopg2.connect(self.database_url, connect_timeout=5)
                 test_conn.close()
+                print("[AssetFlow DB] Connected successfully to PostgreSQL (Supabase).")
             except Exception as e:
                 print(f"[AssetFlow DB] Warning: Could not connect to PostgreSQL ({e}). Falling back to local SQLite.")
                 self.is_postgres = False
+        else:
+            print("[AssetFlow DB] Using local SQLite database engine.")
         self._initialize_db()
 
     def _get_conn(self):
         if self.is_postgres:
             try:
-                return psycopg2.connect(DATABASE_URL)
+                return psycopg2.connect(self.database_url)
             except Exception as e:
                 print(f"[AssetFlow DB] Warning: Postgres connection failed ({e}). Falling back to local SQLite.")
                 self.is_postgres = False
