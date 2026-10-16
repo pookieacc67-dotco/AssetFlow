@@ -19,7 +19,10 @@ except ImportError:
     RealDictCursor = None
     HAS_PSYCOPG2 = False
 
-DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "assetflow.db"))
+if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+    DB_PATH = "/tmp/assetflow.db"
+else:
+    DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "assetflow.db"))
 SCHEMA_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "schema.sql"))
 
 class DBConnection:

@@ -200,26 +200,61 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
         idToken = `mock_uid_usr-${Math.random().toString(36).substring(2, 9)}_email_${loginEmail}_name_${fullName.replace(/\s+/g, "-")}`;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/auth/complete-org-signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${idToken}`
-        },
-        body: JSON.stringify({
-          organization_name: companyName,
-          industry: "",
-          company_size: ""
-        })
-      });
+      let backendOrgId: string | undefined;
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/auth/complete-org-signup`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${idToken}`
+          },
+          body: JSON.stringify({
+            organization_name: companyName,
+            industry: "",
+            company_size: ""
+          })
+        });
 
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.detail || "Failed to complete organization registration.");
+        let resData: any = null;
+        try {
+          const rawText = await response.text();
+          if (rawText && rawText.trim().length > 0) {
+            try {
+              resData = JSON.parse(rawText);
+            } catch {
+              resData = null;
+            }
+          }
+        } catch {
+          resData = null;
+        }
+
+        if (!response.ok) {
+          const detailMsg = resData?.detail;
+          if (detailMsg) {
+            throw new Error(detailMsg);
+          }
+          if (response.status === 404) {
+            throw new Error("Backend API endpoint not found (404). If deployed on Vercel, ensure VITE_API_BASE_URL is set in Project Settings.");
+          }
+          if (response.status >= 500) {
+            throw new Error(`Backend server error (${response.status}). If deployed on Vercel, check VITE_API_BASE_URL or your backend service.`);
+          }
+          throw new Error(`Failed to complete organization registration (Status ${response.status}).`);
+        }
+
+        backendOrgId = resData?.organization_id;
+      } catch (apiErr: any) {
+        console.warn("[AssetFlow Auth] Backend registration note:", apiErr);
+        // If it's a specific validation message (e.g. Account already exists), show it
+        if (apiErr.message && !apiErr.message.includes("Failed to fetch") && !apiErr.message.includes("NetworkError") && !apiErr.message.includes("Backend server error") && !apiErr.message.includes("404")) {
+          throw apiErr;
+        }
+        // If the backend is unreachable or not yet configured on static host, fall back to local client workspace
+        console.info("[AssetFlow Auth] Falling back to client-side organization setup.");
       }
 
-      const backendData = await response.json();
-      const res = signUpAdmin(fullName, companyName, loginEmail, false, backendData.organization_id);
+      const res = signUpAdmin(fullName, companyName, loginEmail, false, backendOrgId);
       setIsLoading(false);
       if (res.success) {
         onNavigate("app");
@@ -279,20 +314,51 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
         idToken = `mock_uid_usr-${Math.random().toString(36).substring(2, 9)}_email_${loginEmail}_name_${fullName.replace(/\s+/g, "-")}`;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/auth/complete-employee-signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${idToken}`
-        },
-        body: JSON.stringify({
-          org_code: orgCode
-        })
-      });
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/auth/complete-employee-signup`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${idToken}`
+          },
+          body: JSON.stringify({
+            org_code: orgCode
+          })
+        });
 
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.detail || "Failed to submit join request.");
+        let resData: any = null;
+        try {
+          const rawText = await response.text();
+          if (rawText && rawText.trim().length > 0) {
+            try {
+              resData = JSON.parse(rawText);
+            } catch {
+              resData = null;
+            }
+          }
+        } catch {
+          resData = null;
+        }
+
+        if (!response.ok) {
+          const detailMsg = resData?.detail;
+          if (detailMsg) {
+            throw new Error(detailMsg);
+          }
+          if (response.status === 404) {
+            throw new Error("Backend API endpoint not found (404). If deployed on Vercel, ensure VITE_API_BASE_URL is set in Project Settings.");
+          }
+          if (response.status >= 500) {
+            throw new Error(`Backend server error (${response.status}). If deployed on Vercel, check VITE_API_BASE_URL.`);
+          }
+          throw new Error(`Failed to submit join request (Status ${response.status}).`);
+        }
+      } catch (apiErr: any) {
+        console.warn("[AssetFlow Auth] Backend join note:", apiErr);
+        if (apiErr.message && !apiErr.message.includes("Failed to fetch") && !apiErr.message.includes("NetworkError") && !apiErr.message.includes("Backend server error") && !apiErr.message.includes("404")) {
+          throw apiErr;
+        }
+        console.info("[AssetFlow Auth] Falling back to client-side employee join.");
       }
 
       const res = signUpEmployee(fullName, orgCode, loginEmail, false);
@@ -340,15 +406,26 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
         idToken = `mock_uid_usr-default_email_${loginEmail}_name_Active-User`;
       }
 
-      const profileRes = await fetch(`${API_BASE_URL}/api/users/me`, {
-        headers: {
-          "Authorization": `Bearer ${idToken}`
-        }
-      });
+      try {
+        const profileRes = await fetch(`${API_BASE_URL}/api/users/me`, {
+          headers: {
+            "Authorization": `Bearer ${idToken}`
+          }
+        });
 
-      if (!profileRes.ok) {
-        const errData = await profileRes.json();
-        console.warn("[AssetFlow Auth] Profile backend note:", errData);
+        if (!profileRes.ok) {
+          try {
+            const rawText = await profileRes.text();
+            if (rawText) {
+              const errData = JSON.parse(rawText);
+              console.warn("[AssetFlow Auth] Profile backend note:", errData);
+            }
+          } catch {
+            // Ignore non-json responses gracefully
+          }
+        }
+      } catch (profileErr) {
+        console.warn("[AssetFlow Auth] Profile sync skipped (backend offline/unreachable):", profileErr);
       }
 
       const res = login(loginEmail);

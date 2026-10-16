@@ -63,7 +63,12 @@ export const BookingView: React.FC = () => {
       if (!response.ok) {
         throw new Error("AI request failed. Please check your backend.");
       }
-      const data = await response.json();
+      let data: any = {};
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error("Invalid response received from AI booking assistant.");
+      }
       if (data.error) {
         throw new Error(data.error);
       }

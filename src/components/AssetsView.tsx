@@ -69,7 +69,12 @@ export const AssetsView: React.FC<AssetsProps> = ({ searchQuery: topSearch }) =>
       if (!response.ok) {
         throw new Error("AI request failed. Please ensure the server is fully started.");
       }
-      const data = await response.json();
+      let data: any = {};
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error("Invalid response received from recommendation engine.");
+      }
       if (data.error) {
         throw new Error(data.error);
       }
