@@ -9,5 +9,7 @@ from app.main import app
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.environ.get("PORT", 8000))
+    raw_port = str(os.environ.get("PORT", "8000")).strip()
+    port = int(raw_port) if raw_port.isdigit() else 8000
+    print(f"[AssetFlow API] Starting server on 0.0.0.0:{port} ...")
     uvicorn.run(app, host="0.0.0.0", port=port)
