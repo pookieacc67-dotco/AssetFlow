@@ -237,6 +237,9 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
           if (response.status === 404) {
             throw new Error("Backend API endpoint not found (404). If deployed on Vercel, ensure VITE_API_BASE_URL is set in Project Settings.");
           }
+          if (response.status === 405) {
+            throw new Error("Backend API endpoint returned 405 (Method Not Allowed). Check that VITE_API_BASE_URL includes https:// and points to your backend.");
+          }
           if (response.status >= 500) {
             throw new Error(`Backend server error (${response.status}). If deployed on Vercel, check VITE_API_BASE_URL or your backend service.`);
           }
@@ -247,7 +250,7 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
       } catch (apiErr: any) {
         console.warn("[AssetFlow Auth] Backend registration note:", apiErr);
         // If it's a specific validation message (e.g. Account already exists), show it
-        if (apiErr.message && !apiErr.message.includes("Failed to fetch") && !apiErr.message.includes("NetworkError") && !apiErr.message.includes("Backend server error") && !apiErr.message.includes("404")) {
+        if (apiErr.message && !apiErr.message.includes("Failed to fetch") && !apiErr.message.includes("NetworkError") && !apiErr.message.includes("Backend server error") && !apiErr.message.includes("404") && !apiErr.message.includes("405")) {
           throw apiErr;
         }
         // If the backend is unreachable or not yet configured on static host, fall back to local client workspace
@@ -348,6 +351,9 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
           if (response.status === 404) {
             throw new Error("Backend API endpoint not found (404). If deployed on Vercel, ensure VITE_API_BASE_URL is set in Project Settings.");
           }
+          if (response.status === 405) {
+            throw new Error("Backend API endpoint returned 405 (Method Not Allowed). Check that VITE_API_BASE_URL includes https:// and points to your backend.");
+          }
           if (response.status >= 500) {
             throw new Error(`Backend server error (${response.status}). If deployed on Vercel, check VITE_API_BASE_URL.`);
           }
@@ -355,7 +361,7 @@ export const Auth: React.FC<AuthProps> = ({ onNavigate, initialStep = "landing" 
         }
       } catch (apiErr: any) {
         console.warn("[AssetFlow Auth] Backend join note:", apiErr);
-        if (apiErr.message && !apiErr.message.includes("Failed to fetch") && !apiErr.message.includes("NetworkError") && !apiErr.message.includes("Backend server error") && !apiErr.message.includes("404")) {
+        if (apiErr.message && !apiErr.message.includes("Failed to fetch") && !apiErr.message.includes("NetworkError") && !apiErr.message.includes("Backend server error") && !apiErr.message.includes("404") && !apiErr.message.includes("405")) {
           throw apiErr;
         }
         console.info("[AssetFlow Auth] Falling back to client-side employee join.");
